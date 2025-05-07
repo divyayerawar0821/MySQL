@@ -17,7 +17,6 @@ select * from student;
 select sname from student;
 show tables;
 
-
 #Create Instagram Database
 
 create database if not exists instagramDB;
@@ -29,3 +28,56 @@ insert into posts(postsid,userid,caption) Values(1,231,'light'),(2,232,'air'),(3
 show tables;
 select * from users;
 select * from posts;
+
+
+#There are 6 constraints in SQL
+#1.Unique Constraint
+#2.Check Constraint
+#3.Not null constraint
+#4.Default Constraint
+#5.Primary Key Constraint
+#6.Foreign Key COnstraint
+
+
+
+
+#Constraints Queries
+create database if not exists college;
+use college;
+
+#unique constraint
+create table STUDENT(phonebr int unique);
+insert into student(phonebr) values(123),(456),(123); #this gives error as u defined this is unique constraint and u are inserting duplicate values
+insert into student(phonebr) values(123),(456),(789); # so u have to insert unique values in phonebr column
+select phonebr from student;
+drop table student;
+
+#not null constraint
+create table student1(age int, rollno int not null);
+insert into student1(age) values(27); # this will throw error as u defined roll no is not null constraint and u have to pass some values because by default it won't take null values as it is mandatory field.
+insert into student1(age,rollno) values (27,101);
+select * from student1;
+
+#check constraint
+create table student3(age int check(age>18));
+insert into student3(age) values(15); #It will throw an error as we apply the check constraint on age as > 18
+insert into student3(age) values(19); 
+
+#Default Constraint
+create table student4(schoolname varchar(50) default 'Universal');
+insert into student4() values();
+select * from student4;
+
+#primary key constraint
+create table student5(age int, rollno int primary key);
+#uniqueness 
+insert into student5(age,rollno) values (12,101), (13,102), (40,102); #throw error as we are inserting duplicate values and we assign rollno as primary key
+
+#not null 
+insert into student5(age,rollno) values (12);
+
+#Foreign Key Constraint
+create table course(coursename varchar(50), rollno int, foreign key (rollno) references student5(rollno));
+
+
+
