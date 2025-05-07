@@ -1,4 +1,5 @@
-https://www.youtube.com/watch?v=RQPpP2ywA9k
+
+
 
 #Database Queries
 
@@ -80,6 +81,30 @@ insert into student5(age,rollno) values (12);
 
 #Foreign Key Constraint
 create table course(coursename varchar(50), rollno int, foreign key (rollno) references student5(rollno));
+
+
+#Foreign Key
+create database company;
+use company;
+
+create table employee( empid int primary key, empname varchar(50), empsalary int);
+create table managers(empid int, mngname varchar(50), mngsalary int, foreign key (empid) references employee(empid));
+
+#update command
+insert into employee(empid, empname, empsalary) values (184968,"Divya",1000), (175539,"Parth",2000),(12345,"Rutuja",5000);
+select * from employee;
+set sql_safe_updates=0;
+update employee set empsalary=12000 where empname="Divya";
+
+#delete command
+delete from employee where empsalary=5000;
+
+#select command
+select * from employee;
+select empsalary, empname from employee;
+
+#where clause
+select * from employee where empname="Divya";
 
 
 
