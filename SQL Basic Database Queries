@@ -1,6 +1,3 @@
-
-
-
 #Database Queries
 
 create database school;
@@ -90,6 +87,7 @@ use company;
 create table employee( empid int primary key, empname varchar(50), empsalary int);
 create table managers(empid int, mngname varchar(50), mngsalary int, foreign key (empid) references employee(empid));
 
+
 #update command
 insert into employee(empid, empname, empsalary) values (184968,"Divya",1000), (175539,"Parth",2000),(12345,"Rutuja",5000);
 select * from employee;
@@ -105,6 +103,187 @@ select empsalary, empname from employee;
 
 #where clause
 select * from employee where empname="Divya";
+
+
+#Alter Command
+#alter command is used to modification or changes on schema, table and database.
+#using alter command we can add,modify and delete the columns.alter
+
+use company;
+
+#add column using alter
+alter table employee add (empaddress varchar(50) not null);
+select * from employee;
+set sql_safe_updates=0;
+update employee set empaddress="Magarpatta,Pune" where empname="Divya";
+select * from employee;
+update employee set empaddress="Magarpatta,Pune" where empname="Divya";
+
+alter table employee add mngaddress varchar(50);
+
+#drop column using alter
+alter table employee drop column mngaddress;
+
+#modify datatype of column using alter
+alter table employee modify empaddress text;
+
+#we can change column name and datatype using alter command
+alter table employee change empaddress empaddres text;
+alter table employee change empaddres empaddress varchar(50);
+
+#rename using alter
+alter table employee rename column empaddress to address;
+
+#Rename Command : it depend on server to server
+rename table employee to employee_details;
+
+
+use company;
+#rename database company to company_details;
+
+
+
+use instagramdb;
+select * from users;
+
+#truncate command
+truncate table users;
+
+use company;
+select * from employee_details;
+insert into employee_details(empid,empname,empsalary,address) values (1345678,"Divya",3000,"Dhanki");
+
+#distinct keyword : to fetch distinct value from columns  and retrieve distinct combination of columns
+select distinct empname from employee_details;
+select * from employee_details;
+
+#retrieve distinct combination of columns
+select distinct empname,empsalary from employee_details;
+
+#Operations in SQL
+#Arithmetic Operators : Addition(+) , Subtraction(-), multiplication(*), Division(/) , modulus(%)
+
+select * from employee_details;
+select empsalary+1 as new_empsalary from employee_details;
+select * from employee_details;
+
+#Logical Operators
+# AND OR NOT are logical operators in SQL
+
+# AND : if both condition are true then only it will give result
+select * from employee_details where empname = "Divya" and empsalary = 3000;
+
+#OR : If any of the one condition is true then it will give give result
+select * from employee_details where address = "Dhanki" OR empsalary=500;
+
+#NOT : 
+select * from employee_details;
+select * from employee_details where not empname = "Divya";
+
+# there two more operators NOT IN and IN in SQL
+select * from employee_details;
+
+# IN Operator 
+select * from employee_details where empsalary in (2000,3000);
+
+# NOT IN Operator 
+select * from employee_details where empsalary not in (2000,3000);
+
+# IS NULL and IS NOT NULL Operators in SQL
+#IS NULL : Check for null values in that column
+# IS NOT NULL : Check for not null values in that column
+
+select * from employee_details;
+
+#IS NULL
+select * from employee_details where empsalary is null;
+
+#IS NOT NULL
+select * from employee_details where empsalary is not null;
+
+#Bitwise Operator
+#AND (&) OR (|) perform operations on bits
+
+#LIKE Operators :  % and _
+
+#% (Percent Sign): It matches for any sequence of zero or more characters
+select * from employee_details where empname like 'P%';
+
+
+# _ (Underscore) : It matches for any single character
+select empname from employee_details where empname like '____a%';
+
+use company;
+select empname from employee_details where empname like '_a%';
+
+#Between operator : check the value lies between the given range 
+
+select * from employee_details;
+select empsalary from employee_details where empsalary between 1000 and 5000;
+
+#Clauses in SQL : where, group by, order by, having , limit
+#clauses are used to fecth data base on specific condition
+
+
+#1. where clause
+select * from employee_details;
+select empname,empsalary from employee_details where empsalary < 3000;
+
+#Limit Clause : This clause used is used to limit the no of rows returned by query : retrieve first n row 
+select * from employee_details limit 2;
+
+#order by clause : to sort the data in ascending and descending order
+#Note by default it will sort in ascending order if didn't provide ASC / DESC
+select * from employee_details order by empsalary asc;
+select * from employee_details order by empsalary desc;
+select * from employee_details order by empsalary;
+
+#Query to fectch the two employee having maximum salary
+select * from employee_details  order by empsalary desc limit 2;
+
+#Aggregate Functions : Aggregate function perform some operations on  set of rows and then returns a single value summarizing the data
+#These are used with select statement to perform some calculations
+
+#Types of Aggregate function
+#1.COUNT() : Count the number of rows in a table.
+#2.SUM() : 
+#3.AVG()
+#4.MIN()
+#5.MAX()
+#6.GROUP_CONCAT()
+
+#COUNT() 
+use company;
+select count(*) from employee_details;
+select count(empsalary) from employee_details;
+
+#SUM() : do the sum of all values present in numeric column
+select sum(empsalary) from employee_details;
+
+#AVG() : It computes the avg of numeric values in numeric column
+select avg(empsalary) from employee_details;
+
+#MIN() : It finds the minimum / smallest value from a numeric column
+select min(empsalary) from employee_details;
+
+#MAX() : It finds the maximum/largest value from numeric column
+select max(empsalary) from employee_details;
+
+#GROUP_CONCAT 
+
+#GROUP BY clause
+select empname, avg(empsalary)from employee_details group by empname;
+
+#having clause : only works on aggregated data
+select empname, avg(empsalary) as avgsalary from employee_details group by empname having avgsalary > 2000;
+
+use company;
+select empname, empsalary from employee_details;
+select empname, avg(empsalary) as avgsalary from employee_details group by empname having avgsalary > 1200;
+
+select avg(empsalary) from employee_details;
+
+
 
 
 
