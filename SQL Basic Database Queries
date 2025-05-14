@@ -283,7 +283,111 @@ select empname, avg(empsalary) as avgsalary from employee_details group by empna
 
 select avg(empsalary) from employee_details;
 
+#Joins in SQL : To join two or more tables we used joins 
+#There are 6 types of joins in SQL
+   # 1.Inner Join : fetch common records from two tables.
+   # 2.Left Join/ Left Outer Join : fetch records from left table and also common records from both the tables.
+   # 3.Right Join/ Right Outer Join : fetch records from right table and also common records from both the tables
+   # 4.Full Join/ Full Outer Join : fetch all the records from both the table
+   # 5.Self Join : This join will apply on same table there is only one table in this join
+   # 6.Cross Join : Perform cartesian or multiplication of both the tables if we have m rows in one table and n rows in other table then it will fetch the records of m*n
+
+#Joins Queries
+use company;
+create table student(id int primary key,name varchar(50));
+insert into student(id,name) values(101,"Ram"),(102,"Rahul"),(103,"Riti");
+
+rename table student to customer;
+
+use company;
+
+create table c_order (id int, o_name varchar(50));
+insert into c_order(id,o_name) values(102,"Fruit"),(103,"Ball"),(104,"Umbrella");
 
 
+#Inner Join Query : It will fetch common records from both the tables
+
+select * from customer inner join c_order on customer.id = c_order.id;  #get the id from both the tables
+select customer.id ,customer.name,c_order.o_name from customer inner join c_order on customer.id = c_order.id;
+
+# Left Join/ Left Outer Join : It will fetch all record from left table and common records from both the tables
+
+select * from customer left join c_order on customer.id = c_order.id;
+select customer.id, customer.name, c_order.o_name from customer left join c_order on customer.id = c_order.id;
 
 
+#Right Join
+
+select * from customer right join c_order on customer.id=c_order.id;
+
+use company;
+select customer.id, customer.name, c_order.o_name from customer right join c_order on customer.id=c_order.id;
+
+# Full Join
+
+select customer.id, customer.name from customer left join c_order on customer.id = c_order.id UNION select * from customer right join c_order on customer.id=c_order.id;
+
+#cross join : m*n
+use company;
+select * from customer cross join c_order;
+select count(*) from customer cross join c_order;
+
+#Exclusive Join : means combine the records which are not common between two tables
+#there are 3 types of exclusive join
+# 1. Left Exclusive Join : means fetch the records only from left table and not the common records between right and left table
+# 2. Right Exclusive Join : means fetch the records only from right table and not the common records between right and left table
+# 3. Full Exclusive Join : means fetch the all records from left and right table except the common records from both the table
+
+# Left Exclusive Join Query
+select * from customer;
+select * from c_order;
+select * from customer left join  c_order on customer.id = c_order.id;
+select * from customer Left join  c_order on customer.id = c_order.id where c_order.id is null;
+
+# Right Exclusive Join Query
+select * from customer right join  c_order on customer.id = c_order.id where customer.id is null;
+
+# Full Exclusive Join Query
+
+select * from customer Left join  c_order on customer.id = c_order.id where c_order.id is null 
+UNION
+select * from customer right join  c_order on customer.id = c_order.id where customer.id is null;
+
+#UNION operator in SQL: union operator in SQL is used to combine the results of two or more select queries into a single result set and gives unique rows by removing the duplictes rows.
+select customer.id from customer UNION select c_order.id from c_order;
+
+#UNION ALL in SQL : union operator in SQL is used to combine the results of two or more select queries into a single result set but does not  remove the duplictes rows.
+select customer.id from customer UNION ALL select c_order.id from c_order;
+
+#Subqueries/Inner Queries/ Nested Queries : SQL subquery is nested between the another SQL statement. whenever we want to retrieve data based on the result of another query we used nested queries.
+#Subqueries can be used with different clauses such as select,insert,update or delete. 
+# It also with where clause based  on the filter condition
+# we can also used the subquery with from clause : select * from (subquery) as altname;
+
+use company;
+select * from employee_details;
+select empname, empsalary from employee_details where empsalary > (select min(empsalary) from employee_details);
+
+select (select avg(empsalary) from employee_details) as avg_salary, empsalary from employee_details;
+
+
+select max(empsalary) as second_max_empsalary from employee_details where empsalary  < (select max(empsalary) from employee_details);
+select max(empsalary) as third_max_empsalary from employee_details where empsalary  < (select max(empsalary) from employee_details where empsalary < (select max(empsalary) from employee_details));
+
+#Limit Clause : limit clause is used to restrict the number of rows returned by query.
+
+#Limit n : It helps to retrieve the a maximum of n rows from the beginning of the result set
+
+# Limit m,n : It used to retrieve the specific no of rows 
+#m : number of rows to skip from beginning
+# n : number of rows to fetch after skipping
+
+# 3th highest salary
+select distinct empsalary from employee_details order by empsalary desc limit 2 ,1;
+
+# View in SQL  : A view is virtual table in SQL. It helps to provide a filter view of data for security process.
+# It helps for data abstraction , security purpose etc. for ex. in employee_details table if we have password to secure such details of employee we can just extract those columns in view table which we want to show people.
+
+create view employeeview as select empid, empname, empsalary from employee_details;
+
+select empid from employeeview;
